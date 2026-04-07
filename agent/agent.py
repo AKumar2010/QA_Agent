@@ -2,12 +2,11 @@ from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.prompts import AIMessagePromptTemplate, PromptTemplate
 from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
-#from utils.utility import load_apiKey
-import os
 
+
+llm=None
 def get_llm_output():
     load_dotenv()
-    #os.environ["OPENAI_API_KEY"]=os.getenv("OPENAI_API_KEY")
 
     # messages=[("system","Assume You are having knowledge on all the things."),
     #           ("human","Write me a paragraph on Iran War.."),]
@@ -25,9 +24,8 @@ def get_llm_output():
     myprompt=prompt.invoke({"topic":usrinput})
     print("prompt is: ",myprompt)
     info=llm.invoke(myprompt)
-    print(info)
+    print(info.content)
 
-    print("end of line")
 
 
 if __name__=="__main__":

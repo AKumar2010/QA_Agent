@@ -9,6 +9,7 @@ from langchain_classic.chains.retrieval import create_retrieval_chain
 from langchain_core.prompts import ChatPromptTemplate
 from utils.utility import load_apiKey
 from langchain_openai import ChatOpenAI
+import chromadb
 import os
 
 #retrieval_qa, retrieval, RetrievalQAWithSourcesChain
@@ -54,9 +55,10 @@ def create_embedding():
      print("input variables are:",template.input_variables)
      userinput= input("enter your topic to search from documets..")
      embedding=OpenAIEmbeddings(model='text-embedding-3-small')
+
      ch_db=Chroma(embedding_function=embedding,persist_directory='./qa_db').from_documents(chunkAll(),embedding,persist_directory='./qa_db')
+     print("Creation of db in progress..")
      retriever = ch_db.as_retriever()
-     ch_db.similarity_search("Check the starship spacex documents and let me know the details about Raptor 2 engines")
      doc_chain=create_stuff_documents_chain(_llm,template)
      retieval_chain= create_retrieval_chain(retriever,doc_chain)
      response=retieval_chain.invoke({"input":userinput,"context":context})
